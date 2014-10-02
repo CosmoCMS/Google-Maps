@@ -1,0 +1,17 @@
+{
+    "name": "Google Maps",
+    "module": "googleMaps",
+    "directives": [
+        {
+            "name": "Google Map",
+            "directive": "google-map",
+            "description": "Enter full address:"
+        }
+    ],
+    "settings": "settings.html",
+    "scripts": [
+            "google-maps.minify.js",
+            "https://maps.googleapis.com/maps/api/js"
+        ],
+    "version": "0.5.0"
+}

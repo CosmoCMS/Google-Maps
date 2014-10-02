@@ -1,0 +1,10 @@
+<div ng-controller="googleMapsSettingsCtrl">
+    <h2>Google Maps Settings</h2><br />
+    
+    <label>Style Array</label>
+    <textarea ng-model="google.style"></textarea><br />
+    
+    <img ng-src="{{markerSrc}}" ng-click="uploadMarker()">
+    
+    <button ng-click="save()">Save</button>
+</div>
