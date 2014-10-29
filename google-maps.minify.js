@@ -5,7 +5,7 @@ angular.module('googleMaps', [])
         $scope.markerSrc = 'core/img/image.svg';
         
         // Get settings
-        $http.get('modules/google-maps/app/settings.php?settings=true')
+        $http.get('modules/Google-Maps/app/settings.php?settings=true')
         .success(function(data){
             $scope.google.style = angular.fromJson(data)['style'];
             $scope.google.marker = angular.fromJson(data)['marker'];
@@ -27,7 +27,10 @@ angular.module('googleMaps', [])
         
         // Save custom style
         $scope.save = function(){
-            $http.post('modules/google-maps/app/settings.php', { marker: $scope.google.marker, style: $scope.google.style })
+            $http.post('modules/Google-Maps/app/settings.php', { 
+                marker: $scope.google.marker,
+                style: $scope.google.style
+            })
             .success(function(data){
                 $rootScope.$broadcast('notify', { message: 'Settings updated' });
             }).error(function(data){
@@ -42,13 +45,14 @@ angular.module('googleMaps', [])
             link: function(scope, elm, attrs){
                 
                 // Get custom styles
-                $http.get('modules/google-maps/app/settings.php?settings=true')
+                $http.get('modules/Google-Maps/app/settings.php?settings=true')
                 .success(function(data){
-                    var googleMapStyle = angular.fromJson(angular.fromJson(data)['style']);
-                    if(angular.fromJson(data)['marker'])
-                        var marker = angular.fromJson(data)['marker'];
-                    console.log(marker);
-                    
+                    console.log(data);
+                    if(data){
+                        var googleMapStyle = angular.fromJson(angular.fromJson(data)['style']);
+                        if(angular.fromJson(data)['marker'])
+                            var marker = angular.fromJson(data)['marker'];
+                    }
                     // Google Map from Latitude and Longitude
                     if(attrs.latitude && attrs.longitude){
                         var latitude = attrs.latitude;
