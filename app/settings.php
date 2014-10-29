@@ -6,11 +6,11 @@ $Cosmo = new Cosmo($pdo, $prefix, $salt);
 
 if($_GET['settings'])
     echo $Cosmo->miscRead('googleMapsSettings');
-else if($_SERVER['HTTP_USERNAME'] && $_SERVER['HTTP_TOKEN']) // Check permissions for autorized requests
+else if($_SERVER['HTTP_USERSID'] && $_SERVER['HTTP_TOKEN']) // Check permissions for autorized requests
 {
-    if($Cosmo->tokenValidate($_SERVER['HTTP_USERNAME'], $_SERVER['HTTP_TOKEN'])){
-        $username = $_SERVER['HTTP_USERNAME'];
-        $role = $Cosmo->usersRead(null, $username);
+    if($Cosmo->tokensRead($_SERVER['HTTP_USERSID'], $_SERVER['HTTP_TOKEN'])){
+        $usersID = $_SERVER['HTTP_USERSID'];
+        $role = $Cosmo->usersRead($usersID)['role'];
         
         if($role === 'admin'){
             $_POST = json_decode(file_get_contents("php://input"), TRUE);
