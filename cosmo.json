@@ -1,6 +1,9 @@
 {
     "name": "Google Maps",
     "module": "googleMaps",
+    "css": [
+        "css/style.minify.css"
+    ],
     "directives": [
         {
             "name": "Google Map",
