@@ -43,11 +43,10 @@ angular.module('googleMaps', [])
         return {
             template: '<div id="map-canvas"></div>',
             link: function(scope, elm, attrs){
-                
+
                 // Get custom styles
                 $http.get('modules/Google-Maps/app/settings.php?settings=true')
                 .success(function(data){
-                    console.log(data);
                     if(data){
                         var googleMapStyle = angular.fromJson(angular.fromJson(data)['style']);
                         if(angular.fromJson(data)['marker'])
@@ -79,7 +78,7 @@ angular.module('googleMaps', [])
                             if(results){
                                 if(results[0].geometry.location.k){
                                     var latitude = results[0].geometry.location.k;
-                                    var longitude = results[0].geometry.location.B;
+                                    var longitude = results[0].geometry.location.D;
                                     
                                     // Google Map
                                     var location = new google.maps.LatLng(latitude, longitude);
