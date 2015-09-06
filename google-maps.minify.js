@@ -1,9 +1,9 @@
 angular.module('googleMaps', [])
-    
+
     .controller('googleMapsSettingsCtrl', ['$scope', '$http', '$rootScope', 'ngDialog', function($scope, $http, $rootScope, ngDialog){
         $scope.google = {};
         $scope.markerSrc = 'core/img/image.svg';
-        
+
         // Get settings
         $http.get('modules/Google-Maps/app/settings.php?settings=true')
         .success(function(data){
@@ -11,12 +11,12 @@ angular.module('googleMaps', [])
             $scope.google.marker = angular.fromJson(data)['marker'];
             $scope.markerSrc = $scope.google.marker;
         });
-        
+
         // Add a custom marker
         $scope.uploadMarker = function(){
             ngDialog.open({ template: 'core/html/modal.html', data: angular.toJson({ id: 'google-marker' }) });
         };
-        
+
         // Watch for edits to the marker
         $scope.$on('choseFile', function(event, data){
             if(data.id === 'google-marker'){
@@ -24,10 +24,10 @@ angular.module('googleMaps', [])
                 $scope.markerSrc = $scope.google.marker;
             }
         });
-        
+
         // Save custom style
         $scope.save = function(){
-            $http.post('modules/Google-Maps/app/settings.php', { 
+            $http.post('modules/Google-Maps/app/settings.php', {
                 marker: $scope.google.marker,
                 style: $scope.google.style
             })
@@ -38,12 +38,11 @@ angular.module('googleMaps', [])
             });
         };
     }])
-    
+
     .directive('googleMap', ['$rootScope', '$http', function($rootScope, $http){
         return {
             template: '<div id="map-canvas"></div>',
             link: function(scope, elm, attrs){
-
                 // Get custom styles
                 $http.get('modules/Google-Maps/app/settings.php?settings=true')
                 .success(function(data){
@@ -57,14 +56,14 @@ angular.module('googleMaps', [])
                         var latitude = attrs.latitude;
                         var longitude = attrs.longitude;
                         var location = new google.maps.LatLng(latitude, longitude);
-                        
+
                         var mapOptions = {
                             center: location,
                             zoom: 12,
                             mapTypeId: google.maps.MapTypeId.ROADMAP,
                             styles: googleMapStyle
                         };
-                        
+
                         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
                         var driverMarker = new google.maps.Marker({
                                 position: location,
@@ -76,10 +75,14 @@ angular.module('googleMaps', [])
                         var geocoderRequest = { address: attrs.googleMap };
                         geocoder.geocode(geocoderRequest, function(results, status){
                             if(results){
-                                if(results[0].geometry.location.k){
-                                    var latitude = results[0].geometry.location.k;
-                                    var longitude = results[0].geometry.location.D;
-                                    
+                                if(results[0].geometry.location){
+                                    for (var key in results[0].geometry.location) {
+                                        if(!latitude)
+                                            var latitude = results[0].geometry.location[key];
+                                        else if(!longitude)
+                                            var longitude = results[0].geometry.location[key];
+                                    }
+
                                     // Google Map
                                     var location = new google.maps.LatLng(latitude, longitude);
 
